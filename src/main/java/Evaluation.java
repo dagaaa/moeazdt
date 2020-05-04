@@ -1,30 +1,33 @@
-import java.io.FileWriter;
-import java.io.IOException;
-
 import org.moeaframework.Executor;
 import org.moeaframework.analysis.plot.Plot;
 import org.moeaframework.core.NondominatedPopulation;
+import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 
-import static java.lang.System.currentTimeMillis;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Collection;
 
-public class ZDT1 {
+import static java.lang.System.currentTimeMillis;
+import static java.util.Arrays.asList;
+
+public class Evaluation {
     public static void main(String[] args) throws IOException {
         FileWriter fileWriter = new FileWriter("results.csv");
         fileWriter.write("problem, populationSize, maxEvaluations, elapsedTime [ms]\n");
 
         //configure and run this experiment
-        String[] problems = {"ZDT1", "ZDT2", "ZDT3"};
+        Collection<Class<? extends Problem>> problems = asList(SymPartSimple.class);
         int[] populationSizeArray = {10, 100, 1_000, 10_000};
         int[] maxEvaluationsArray = {1_000, 10_000, 100_000};
 
-        for (String problem : problems) {
+        for (Class<? extends Problem> problem : problems) {
             for (int populationSize : populationSizeArray) {
                 for (int maxEvaluations : maxEvaluationsArray) {
                     String label = String.format("Problem: %s, Population size: %s, Max evaluations: %s", problem, populationSize, maxEvaluations);
 
                     Executor executor = new Executor()
-                            .withProblem(problem)
+                            .withProblemClass(problem)
                             .withAlgorithm("NSGAII")
                             .withMaxEvaluations(10_000)
                             .withProperty("populationSize", populationSize)
@@ -42,7 +45,7 @@ public class ZDT1 {
                     long elapsedTime = currentTimeMillis() - before;
 
                     fileWriter
-                            .append(problem)
+                            .append(problem.getSimpleName())
                             .append(", ")
                             .append(String.valueOf(populationSize))
                             .append(", ")
@@ -50,7 +53,7 @@ public class ZDT1 {
                             .append(", ")
                             .append(String.valueOf(elapsedTime))
                             .append("\n");
-//                    printResults(problem, result);
+                    printResults(problem.getSimpleName(), result);
 
                     new Plot()
                             .add(label, result)
