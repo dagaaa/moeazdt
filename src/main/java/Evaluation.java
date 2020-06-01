@@ -1,26 +1,29 @@
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Collection;
+
 import org.moeaframework.Executor;
 import org.moeaframework.analysis.plot.Plot;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
-
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.Collection;
+import org.moeaframework.problem.ZDT.ZDT6;
 
 import static java.lang.System.currentTimeMillis;
 import static java.util.Arrays.asList;
 
 public class Evaluation {
     public static void main(String[] args) throws IOException {
+        setProperties();
+
         FileWriter fileWriter = new FileWriter("results.csv");
         fileWriter.write("problem, algorithm, populationSize, maxEvaluations, elapsedTime [ms]\n");
 
         //configure and run this experiment
-        Collection<Class<? extends Problem>> problems = asList(SymPartRotate.class, SymPartSimple.class);
-        int[] populationSizeArray = {10, 100, 1_000, 10_000};
-        int[] maxEvaluationsArray = {1_000, 10_000, 100_000};
-        String[] algorithms = {"NSGAII", "GDE3", "eMOEA"};
+        Collection<Class<? extends Problem>> problems = asList(ZDT6.class);
+        int[] populationSizeArray = {100};
+        int[] maxEvaluationsArray = {1_000};
+        String[] algorithms = {"NSGAII", "NSGAIII", "MOEAD", "SPEA2", "hype"};
 
         for (Class<? extends Problem> problem : problems) {
             for (String algorithm : algorithms) {
@@ -32,8 +35,6 @@ public class Evaluation {
                                 .withProblemClass(problem)
                                 .withAlgorithm(algorithm)
                                 .withMaxEvaluations(10_000)
-                                .withProperty("populationSize", populationSize)
-                                .withProperty("maxEvaluations", maxEvaluations)
                                 .withProgressListener(progressEvent -> System.out.format(
                                         "Label: %s, Elapsed time: %s, Remaining time: %s, Complete %s percent\n",
                                         label,
@@ -83,5 +84,11 @@ public class Evaluation {
                     solution.getObjective(1)
             );
         }
+    }
+
+    private static void setProperties() {
+        System.setProperty("org.moeaframework.util.pisa.algorithms", "hype, spea2, nsga2");
+        System.setProperty("org.moeaframework.algorithm.pisa.hype.command", "./hype_win/hype.exe");
+        System.setProperty("org.moeaframework.algorithm.pisa.hype.parameters", "seed, tournament, mating, bound, nrOfSamples");
     }
 }
