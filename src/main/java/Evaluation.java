@@ -20,7 +20,7 @@ public class Evaluation {
         fileWriter.write("problem, algorithm, populationSize, maxEvaluations, elapsedTime [ms]\n");
 
         //configure and run this experiment
-        Collection<Class<? extends Problem>> problems = asList(ZDT6.class);
+        Collection<Class<? extends Problem>> problems = asList(MMF1.class);
         int[] populationSizeArray = {100};
         int[] maxEvaluationsArray = {1_000};
         String[] algorithms = {"NSGAII", "NSGAIII", "MOEAD", "SPEA2", "hype"};
@@ -35,6 +35,7 @@ public class Evaluation {
                                 .withProblemClass(problem)
                                 .withAlgorithm(algorithm)
                                 .withMaxEvaluations(10_000)
+                                .withProperty("populationSize", populationSize)
                                 .withProgressListener(progressEvent -> System.out.format(
                                         "Label: %s, Elapsed time: %s, Remaining time: %s, Complete %s percent\n",
                                         label,
@@ -88,7 +89,10 @@ public class Evaluation {
 
     private static void setProperties() {
         System.setProperty("org.moeaframework.util.pisa.algorithms", "hype, spea2, nsga2");
-        System.setProperty("org.moeaframework.algorithm.pisa.hype.command", "./hype_win/hype.exe");
-        System.setProperty("org.moeaframework.algorithm.pisa.hype.parameters", "seed, tournament, mating, bound, nrOfSamples");
+        System.setProperty("org.moeaframework.algorithm.pisa.algorithms", "hype");
+        System.setProperty("org.moeaframework.algorithm.pisa.hype.command", "C:\\Users\\dagma\\Downloads\\moeazdt\\src\\main\\resources\\hype_win\\hype.exe");
+//        System.setProperty("org.moeaframework.algorithm.pisa.hype.parameters", "seed, tournament, mating, bound, nrOfSamples");
+        System.setProperty("org.moeaframework.algorithm.pisa.hype.configuration", "C:\\Users\\dagma\\Downloads\\moeazdt\\src\\main\\resources\\hype_win\\hype_param.txt");
     }
+
 }
