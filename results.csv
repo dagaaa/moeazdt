@@ -1,6 +1,2 @@
 problem, algorithm, populationSize, maxEvaluations, elapsedTime [ms]
-MMF1, NSGAII, 100, 1000, 245
-MMF1, NSGAIII, 100, 1000, 497
-MMF1, MOEAD, 100, 1000, 155
-MMF1, SPEA2, 100, 1000, 902
-MMF1, hype, 100, 1000, 12950
+Himmelblau, NSGAII, 1000, 1000, 501

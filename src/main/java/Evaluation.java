@@ -20,10 +20,10 @@ public class Evaluation {
         fileWriter.write("problem, algorithm, populationSize, maxEvaluations, elapsedTime [ms]\n");
 
         //configure and run this experiment
-        Collection<Class<? extends Problem>> problems = asList(MMF1.class);
-        int[] populationSizeArray = {100};
+        Collection<Class<? extends Problem>> problems = asList(Himmelblau.class);
+        int[] populationSizeArray = {1000};
         int[] maxEvaluationsArray = {1_000};
-        String[] algorithms = {"NSGAII", "NSGAIII", "MOEAD", "SPEA2", "hype"};
+        String[] algorithms = {"NSGAII"};
 
         for (Class<? extends Problem> problem : problems) {
             for (String algorithm : algorithms) {
@@ -79,10 +79,11 @@ public class Evaluation {
         System.out.format("Objective1  Objective2%n");
 
         for (Solution solution : result) {
-            System.out.format(
-                    "%.4f      %.4f%n",
-                    solution.getObjective(0),
-                    solution.getObjective(1)
+            System.out.println(
+
+                    solution.getVariable(0).toString() +"     "
+                    +solution.getVariable(1).toString()   +"  "+
+                    solution.getObjective(0)
             );
         }
     }
