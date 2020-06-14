@@ -1,2 +1,2 @@
 problem, algorithm, populationSize, maxEvaluations, elapsedTime [ms]
-Equal, NSGAII, 1000, 10000, 541
+Equal, NSGAII, 1000, 10000, 945

@@ -32,6 +32,7 @@ public class Equal extends AbstractProblem {
         double[] yI = calcYI(xI);
 
         f[0] = calcF(yI);
+//        System.out.println(f[0]);
 
         solution.setObjectives(f);
     }
@@ -55,7 +56,20 @@ public class Equal extends AbstractProblem {
     private double[] calcXI(double[] xIT, double[] shiftIT) {
         return IntStream.range(0, xIT.length)
                 .mapToDouble(i -> xIT[i] + shiftIT[i])
+                .map(this::calcBoundedXI)
                 .toArray();
+    }
+
+    private double calcBoundedXI(double xI) {
+        if (xI > UPPER_BOUND) {
+            double difference = Math.abs(UPPER_BOUND - xI);
+            return calcBoundedXI(LOWER_BOUND + difference);
+        } else if (xI < LOWER_BOUND) {
+            double difference = Math.abs(LOWER_BOUND - xI);
+            return calcBoundedXI(UPPER_BOUND - difference);
+        } else {
+            return xI;
+        }
     }
 
     private double[] calcYI(double[] xI) {
