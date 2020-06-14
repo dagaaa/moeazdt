@@ -1,2 +1,2 @@
 problem, algorithm, populationSize, maxEvaluations, elapsedTime [ms]
-Himmelblau, NSGAII, 1000, 1000, 501
+Equal, NSGAII, 1000, 10000, 541

@@ -7,7 +7,6 @@ import org.moeaframework.analysis.plot.Plot;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
-import org.moeaframework.problem.ZDT.ZDT6;
 
 import static java.lang.System.currentTimeMillis;
 import static java.util.Arrays.asList;
@@ -20,9 +19,9 @@ public class Evaluation {
         fileWriter.write("problem, algorithm, populationSize, maxEvaluations, elapsedTime [ms]\n");
 
         //configure and run this experiment
-        Collection<Class<? extends Problem>> problems = asList(Himmelblau.class);
+        Collection<Class<? extends Problem>> problems = asList(Equal.class);
         int[] populationSizeArray = {1000};
-        int[] maxEvaluationsArray = {1_000};
+        int[] maxEvaluationsArray = {Equal.MAX_ITERATIONS};
         String[] algorithms = {"NSGAII"};
 
         for (Class<? extends Problem> problem : problems) {
@@ -34,7 +33,7 @@ public class Evaluation {
                         Executor executor = new Executor()
                                 .withProblemClass(problem)
                                 .withAlgorithm(algorithm)
-                                .withMaxEvaluations(10_000)
+                                .withMaxEvaluations(maxEvaluations)
                                 .withProperty("populationSize", populationSize)
                                 .withProgressListener(progressEvent -> System.out.format(
                                         "Label: %s, Elapsed time: %s, Remaining time: %s, Complete %s percent\n",
@@ -81,8 +80,8 @@ public class Evaluation {
         for (Solution solution : result) {
             System.out.println(
 
-                    solution.getVariable(0).toString() +"     "
-                    +solution.getVariable(1).toString()   +"  "+
+                    solution.getVariable(0).toString() + "     " +
+//                    +solution.getVariable(1).toString()   +"  "+
                     solution.getObjective(0)
             );
         }
