@@ -1,24 +1,22 @@
-import java.util.Arrays;
-import java.util.stream.IntStream;
-
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.problem.AbstractProblem;
 
-import static java.lang.Math.PI;
-import static java.lang.Math.pow;
-import static java.lang.Math.sin;
+import java.util.Arrays;
+import java.util.stream.IntStream;
 
-public class Equal extends AbstractProblem {
+import static java.lang.Math.*;
+
+public class TwoPeak extends AbstractProblem {
 
     public static final int MAX_ITERATIONS = 10_000;
-    private static final double UPPER_BOUND = 1.5;
-    private static final double LOWER_BOUND = -0.5;
+    private static final double UPPER_BOUND = 30.0;
+    private static final double LOWER_BOUND = -10.0;
     private static final double R = UPPER_BOUND - LOWER_BOUND;
     private int currentIteration = 0;
 
-    public Equal() {
+    public TwoPeak() {
         super(1, 1);
     }
 
@@ -79,17 +77,19 @@ public class Equal extends AbstractProblem {
 
     private double calcYI(double xI) {
         if (xI < 0.0) {
-            return pow(xI, 2.0);
-        } else if (xI > 1.0) {
-            return pow((xI - 1.0), 2.0);
-        } else {
-            return - pow(sin(5.0 * PI * xI), 6.0);
+            return -160+pow(xI, 2.0);
+        } else if (xI <= 15.0) {
+            return (160.0/15)*(xI-15);
+        } else if (xI <= 20.0){
+            return 200.0/5*(15-xI);
         }
+        else
+            return -200+Math.pow(xI-20,2);
     }
 
     private double calcF(double[] yI) {
         double yISum = Arrays.stream(yI).sum();
-        return numberOfVariables + yISum;
+        return 200*numberOfVariables + yISum;
     }
 
     @Override

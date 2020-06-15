@@ -21,7 +21,7 @@ public class Evaluation {
         //configure and run this experiment
         Collection<Class<? extends Problem>> problems = asList(Equal.class);
         int[] populationSizeArray = {1000};
-        int[] maxEvaluationsArray = {Equal.MAX_ITERATIONS};
+        int[] maxEvaluationsArray = {TwoPeak.MAX_ITERATIONS};
         String[] algorithms = {"NSGAII"};
 
         for (Class<? extends Problem> problem : problems) {
